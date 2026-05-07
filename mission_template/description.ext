@@ -1,0 +1,3 @@
+#include "fg2_intelFramework\config\CfgFG2IntelFramework.hpp"
+#include "fg2_intelFramework\ui\RscFG2Terminal.hpp"
+#include "fg2_intelFramework\CfgFunctions.hpp"

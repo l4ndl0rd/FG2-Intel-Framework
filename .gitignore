@@ -1,0 +1,25 @@
+# Arma build/output files
+*.pbo
+*.bisign
+*.bikey
+*.rpt
+*.log
+*.mdmp
+*.bidmp
+*.tmp
+
+# Editor/OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Tools/build folders
+build/
+dist/
+release/
+@*/
+
+# Do not commit local private server/profile data
+*.Arma3Profile
+*.vars.Arma3Profile
