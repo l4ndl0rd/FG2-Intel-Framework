@@ -1,17 +1,10 @@
 # Changelog
 
-## [Unreleased]
+## [1.2.0]
 
 ### New
-- Completion effect system documentation
-- GitHub Wiki documentation structure
-- Git-ready repository layout
-
-### Changes
-- Prepared framework for repository use
-
-### Deleted
-- —
+- Added function to run a custom script
+- Added documentation to the wiki
 
 ## [1.1.0]
 
