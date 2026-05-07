@@ -5,7 +5,7 @@
 
 if (!isServer) exitWith {};
 
-params ["_device", "_jobId"];
+params ["_device", "_jobId", ["_playerUID", ""]];
 
 if (isNull _device) exitWith {
     ["ERROR", "addIntelJob failed. Invalid/null device. Job ID: %1", [_jobId]] call fg2_fnc_log;
@@ -80,7 +80,8 @@ for "_i" from (_completed + 1) to _unitsTotal do {
         _variance,
         _activeTitle,
         _unitLabel,
-        _unitsTotal
+        _unitsTotal,
+        _playerUID
     ];
 
     [_device, _job] call fg2_fnc_pushQueue;

@@ -49,7 +49,7 @@ missionNamespace setVariable ["fg2_allDevices", [], true];
 
     private _jobId = _availableJobs select 0;
 
-    [_device, _jobId] call fg2_fnc_addIntelJob;
+    [_device, _jobId, _playerUID] call fg2_fnc_addIntelJob;
 
 }] call CBA_fnc_addEventHandler;
 
