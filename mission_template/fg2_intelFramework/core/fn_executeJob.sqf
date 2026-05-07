@@ -29,7 +29,8 @@ _job params [
     "_variance",
     "_activeTitle",
     "_unitLabel",
-    ["_unitsTotalFromJob", 0]
+    ["_unitsTotalFromJob", 0],
+    ["_playerUID", ""]
 ];
 
 private _totalTime = _duration + random _variance;
@@ -122,10 +123,20 @@ if (
     private _onCompleteEvent = _device getVariable ["fg2_onCompleteEvent", ""];
     private _onCompleteArgs = _device getVariable ["fg2_onCompleteArgs", []];
 
+    private _player = objNull;
+
+    if !(_playerUID isEqualTo "") then {
+        {
+            if ((getPlayerUID _x) isEqualTo _playerUID) exitWith {
+                _player = _x;
+            };
+        } forEach allPlayers;
+    };
+
     if !(_onCompleteEvent isEqualTo "") then {
         ["INFO", "Firing completion event '%1' for %2. Job: %3. Args: %4", [_onCompleteEvent, _device, _jobId, _onCompleteArgs]] call fg2_fnc_log;
 
-        [_onCompleteEvent, [_device, _jobId, _onCompleteArgs]] call CBA_fnc_localEvent;
+        [_onCompleteEvent, [_device, _jobId, _onCompleteArgs, _player, _playerUID]] call CBA_fnc_localEvent;
     } else {
         ["INFO", "No completion event configured for %1. Job: %2", [_device, _jobId]] call fg2_fnc_log;
     };

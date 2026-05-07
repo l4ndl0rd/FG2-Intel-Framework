@@ -243,7 +243,7 @@ missionNamespace setVariable ["fg2_completionEffectsInitialized", true, true];
         ];
 */
 ["fg2_completion_executeScript", {
-    params ["_device", "_jobId", ["_args", []]];
+    params ["_device", "_jobId", ["_args", []], ["_player", objNull], ["_playerUID", ""]];
 
     private _scriptPath = _args param [0, "", [""]];
     private _customArgs = _args param [1, [], [[]]];
@@ -258,7 +258,7 @@ missionNamespace setVariable ["fg2_completionEffectsInitialized", true, true];
 
     ["INFO", "Completion effect executeScript executed. Script: %1. Device: %2. Job: %3", [_scriptPath, _device, _jobId]] call fg2_fnc_log;
 
-    [_device, _jobId, _customArgs] execVM _scriptPath;
+    [_device, _jobId, _customArgs, _player, _playerUID] execVM _scriptPath;
 
 }] call CBA_fnc_addEventHandler;
 
