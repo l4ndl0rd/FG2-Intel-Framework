@@ -36,11 +36,19 @@ private _totalTime = _duration + random _variance;
 private _tick = 0.2;
 private _elapsed = 0;
 
-if (_totalTime <= 0) then { _totalTime = 1; };
+if (_totalTime <= 0) then {
+    _totalTime = 1;
+};
 
 private _unitsTotal = _device getVariable ["fg2_unitsTotal", _unitsTotalFromJob];
-if (_unitsTotal <= 0) then { _unitsTotal = _unitsTotalFromJob; };
-if (_unitsTotal <= 0) then { _unitsTotal = 1; };
+
+if (_unitsTotal <= 0) then {
+    _unitsTotal = _unitsTotalFromJob;
+};
+
+if (_unitsTotal <= 0) then {
+    _unitsTotal = 1;
+};
 
 _device setVariable ["fg2_unitsTotal", _unitsTotal, true];
 _device setVariable ["fg2_lastJobId", _jobId, true];
@@ -63,6 +71,7 @@ while {
 
     if (!_paused) then {
         _elapsed = _elapsed + _tick;
+
         private _progress = (_elapsed / _totalTime) min 1;
         _device setVariable ["fg2_jobProgress", _progress, true];
     };
@@ -115,6 +124,7 @@ if (
 
     if !(_onCompleteEvent isEqualTo "") then {
         ["INFO", "Firing completion event '%1' for %2. Job: %3. Args: %4", [_onCompleteEvent, _device, _jobId, _onCompleteArgs]] call fg2_fnc_log;
+
         [_onCompleteEvent, [_device, _jobId, _onCompleteArgs]] call CBA_fnc_localEvent;
     } else {
         ["INFO", "No completion event configured for %1. Job: %2", [_device, _jobId]] call fg2_fnc_log;

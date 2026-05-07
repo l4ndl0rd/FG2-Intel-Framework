@@ -15,10 +15,16 @@ if (_device getVariable ["fg2_registered", false]) exitWith {
     ["WARN", "Device already registered: %1", [_device]] call fg2_fnc_log;
 };
 
-private _existingClass = _device getVariable ["fg2_deviceClass", ""];
+private _existingClass = _device getVariable ["fg2_deviceClass", _class];
 
 if (_existingClass isEqualTo "") exitWith {
     ["ERROR", "RegisterDevice failed. No fg2_deviceClass set on %1", [_device]] call fg2_fnc_log;
+};
+
+private _deviceCfg = missionConfigFile >> "CfgFG2IntelFramework" >> "Devices" >> _existingClass;
+
+if (!isClass _deviceCfg) exitWith {
+    ["ERROR", "RegisterDevice failed. Invalid fg2_deviceClass '%1' on %2", [_existingClass, _device]] call fg2_fnc_log;
 };
 
 _device setVariable ["fg2_registered", true, true];
@@ -42,7 +48,6 @@ _device setVariable ["fg2_unitsTotal", 0, true];
 _device setVariable ["fg2_activeTitle", "", true];
 _device setVariable ["fg2_unitLabel", "Completed", true];
 _device setVariable ["fg2_lastJobId", "", true];
-
 
 // Completion Effects
 if (isNil {_device getVariable "fg2_onCompleteEvent"}) then {

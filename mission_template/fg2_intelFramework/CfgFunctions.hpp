@@ -37,7 +37,6 @@ class CfgFunctions
             class openTerminal {};
             class updateTerminal {};
         };
-
         class util
         {
             file = "fg2_intelFramework\util";

@@ -25,12 +25,29 @@ private _duration = getNumber (_cfg >> "duration");
 private _variance = getNumber (_cfg >> "durationVariance");
 private _unitsTotal = getNumber (_cfg >> "unitsTotal");
 
-if (_displayName isEqualTo "") then { _displayName = _jobId; };
-if (_activeTitle isEqualTo "") then { _activeTitle = toUpper _displayName; };
-if (_unitLabel isEqualTo "") then { _unitLabel = "Completed"; };
-if (_duration <= 0) then { _duration = 1; };
-if (_variance < 0) then { _variance = 0; };
-if (_unitsTotal <= 0) then { _unitsTotal = 1; };
+if (_displayName isEqualTo "") then {
+    _displayName = _jobId;
+};
+
+if (_activeTitle isEqualTo "") then {
+    _activeTitle = toUpper _displayName;
+};
+
+if (_unitLabel isEqualTo "") then {
+    _unitLabel = "Completed";
+};
+
+if (_duration <= 0) then {
+    _duration = 1;
+};
+
+if (_variance < 0) then {
+    _variance = 0;
+};
+
+if (_unitsTotal <= 0) then {
+    _unitsTotal = 1;
+};
 
 private _completed = _device getVariable ["fg2_unitsCompleted", 0];
 private _remaining = _unitsTotal - _completed;

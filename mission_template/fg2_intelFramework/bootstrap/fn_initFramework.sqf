@@ -1,6 +1,15 @@
 /*
     FG2 - Framework Initialization
-    SERVER ONLY
+    File: fn_initFramework.sqf
+
+    Purpose:
+        Initializes the FG2 intel framework on server start.
+        - Registers devices
+        - Sets up server event handlers
+        - Prepares global state
+
+    Runs:
+        SERVER ONLY
 */
 
 if (!isServer) exitWith {};

@@ -133,6 +133,14 @@ missionNamespace setVariable ["fg2_completionEffectsInitialized", true, true];
         ["variableName", value, public]
         OR
         [targetObject, "variableName", value, public]
+
+    Example - set variable on the device itself:
+        this setVariable ["fg2_onCompleteEvent", "fg2_completion_setVariable", true];
+        this setVariable ["fg2_onCompleteArgs", ["fg2_terminalCompleted", true, true], true];
+
+    Example - set variable on another object:
+        this setVariable ["fg2_onCompleteEvent", "fg2_completion_setVariable", true];
+        this setVariable ["fg2_onCompleteArgs", [fg2_target_vehicle_1, "fg2_unlockedByIntel", true, true], true];
 */
 ["fg2_completion_setVariable", {
     params ["_device", "_jobId", ["_args", []]];
@@ -172,6 +180,17 @@ missionNamespace setVariable ["fg2_completionEffectsInitialized", true, true];
         ["markerName"]
         OR
         ["markerName", alpha]
+
+    Example - reveal marker fully:
+        this setVariable ["fg2_onCompleteEvent", "fg2_completion_revealMarker", true];
+        this setVariable ["fg2_onCompleteArgs", ["fg2_marker_intelCache_1"], true];
+
+    Example - reveal marker with custom alpha:
+        this setVariable ["fg2_onCompleteEvent", "fg2_completion_revealMarker", true];
+        this setVariable ["fg2_onCompleteArgs", ["fg2_marker_intelCache_1", 0.75], true];
+
+    Editor setup:
+        Create marker and set Alpha to 0.
 */
 ["fg2_completion_revealMarker", {
     params ["_device", "_jobId", ["_args", []]];
@@ -217,6 +236,27 @@ missionNamespace setVariable ["fg2_completionEffectsInitialized", true, true];
         [[x,y,z], doorIndex, animateDoor]
 
     If no valid target is passed, nearestBuilding _device is used.
+
+    doorIndex:
+        1 = Door_1
+        2 = Door_2
+        etc.
+
+    animateDoor:
+        true  - unlock and open the door
+        false - only unlock the door
+
+    Example - unlock Door_1 of nearest building to marker:
+        this setVariable ["fg2_onCompleteEvent", "fg2_completion_unlockDoor", true];
+        this setVariable ["fg2_onCompleteArgs", ["fg2_marker_targetBuilding_1", 1], true];
+
+    Example - unlock and open Door_2 of nearest building to marker:
+        this setVariable ["fg2_onCompleteEvent", "fg2_completion_unlockDoor", true];
+        this setVariable ["fg2_onCompleteArgs", ["fg2_marker_targetBuilding_1", 2, true], true];
+
+    Example - unlock Door_1 of nearest building to the device:
+        this setVariable ["fg2_onCompleteEvent", "fg2_completion_unlockDoor", true];
+        this setVariable ["fg2_onCompleteArgs", [], true];
 */
 ["fg2_completion_unlockDoor", {
     params ["_device", "_jobId", ["_args", []]];
@@ -256,11 +296,12 @@ missionNamespace setVariable ["fg2_completionEffectsInitialized", true, true];
     };
 
     private _doorVar = format ["bis_disabled_Door_%1", _doorIndex];
+    private _doorAnim = format ["Door_%1_rot", _doorIndex];
 
     _target setVariable [_doorVar, 0, true];
 
     if (_animateDoor) then {
-        [_target, _doorIndex, 1] remoteExecCall ["BIS_fnc_Door", 0, true];
+        _target animateSource [_doorAnim, 1, true];
     };
 
     ["INFO", "Completion effect unlockDoor executed. Device: %1. Target: %2. Door: %3. Opened: %4. Job: %5", [_device, _target, _doorIndex, _animateDoor, _jobId]] call fg2_fnc_log;
@@ -272,6 +313,23 @@ missionNamespace setVariable ["fg2_completionEffectsInitialized", true, true];
 
     fg2_onCompleteArgs format:
         ["eventName", eventArgs]
+
+    Example - trigger a custom mission event:
+        this setVariable ["fg2_onCompleteEvent", "fg2_completion_globalEvent", true];
+        this setVariable ["fg2_onCompleteArgs", ["fg2_mission_intelDownloaded", []], true];
+
+    Example - pass target object and state:
+        this setVariable ["fg2_onCompleteEvent", "fg2_completion_globalEvent", true];
+        this setVariable ["fg2_onCompleteArgs", ["fg2_unlockVehicle", [fg2_target_vehicle_1, true]], true];
+
+    Matching receiver example:
+        ["fg2_unlockVehicle", {
+            params ["_vehicle", "_unlocked"];
+
+            if (isNull _vehicle) exitWith {};
+
+            _vehicle lock 0;
+        }] call CBA_fnc_addEventHandler;
 */
 ["fg2_completion_globalEvent", {
     params ["_device", "_jobId", ["_args", []]];
