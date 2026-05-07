@@ -85,20 +85,11 @@ this setVariable ["fg2_onCompleteArgs", [fg2_target_vehicle_1], true];
 
 See the `wiki/` folder for complete implementation documentation.
 
-## GitHub Wiki
+## Documentation
 
-The `wiki/` folder is prepared so it can be pushed into the GitHub Wiki repository.
+Technical documentation is maintained in the GitHub Wiki:
 
-Example after creating the GitHub repo and enabling Wiki:
-
-```bash
-git clone https://github.com/<USER>/<REPO>.wiki.git FG2-Intel-Framework.wiki
-cp wiki/*.md FG2-Intel-Framework.wiki/
-cd FG2-Intel-Framework.wiki
-git add .
-git commit -m "Add FG2 Intel Framework documentation"
-git push
-```
+https://github.com/l4ndl0rd/FG2-Intel-Framework/wiki
 
 ## Changelog
 
