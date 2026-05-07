@@ -215,6 +215,54 @@ missionNamespace setVariable ["fg2_completionEffectsInitialized", true, true];
 }] call CBA_fnc_addEventHandler;
 
 /*
+    Executes a custom SQF script.
+
+    Script executes SERVER-SIDE.
+
+    fg2_onCompleteArgs format:
+        ["pathToScript"]
+        OR
+        ["pathToScript", customArgs]
+
+    Script receives:
+        [_device, _jobId, customArgs]
+
+    Example - execute simple script:
+        this setVariable ["fg2_onCompleteEvent", "fg2_completion_executeScript", true];
+        this setVariable ["fg2_onCompleteArgs", ["scripts\myScript.sqf"], true];
+
+    Example - execute script with arguments:
+        this setVariable ["fg2_onCompleteEvent", "fg2_completion_executeScript", true];
+        this setVariable [
+            "fg2_onCompleteArgs",
+            [
+                "scripts\unlockObjective.sqf",
+                [fg2_target_vehicle_1, true]
+            ],
+            true
+        ];
+*/
+["fg2_completion_executeScript", {
+    params ["_device", "_jobId", ["_args", []]];
+
+    private _scriptPath = _args param [0, "", [""]];
+    private _customArgs = _args param [1, [], [[]]];
+
+    if (_scriptPath isEqualTo "") exitWith {
+        ["ERROR", "Completion effect executeScript failed. Missing script path. Device: %1. Job: %2. Args: %3", [_device, _jobId, _args]] call fg2_fnc_log;
+    };
+
+    if !(fileExists _scriptPath) exitWith {
+        ["ERROR", "Completion effect executeScript failed. Script does not exist: %1. Device: %2. Job: %3", [_scriptPath, _device, _jobId]] call fg2_fnc_log;
+    };
+
+    ["INFO", "Completion effect executeScript executed. Script: %1. Device: %2. Job: %3", [_scriptPath, _device, _jobId]] call fg2_fnc_log;
+
+    [_device, _jobId, _customArgs] execVM _scriptPath;
+
+}] call CBA_fnc_addEventHandler;
+
+/*
     Unlocks a door on a building/object.
 
     Target can be:
